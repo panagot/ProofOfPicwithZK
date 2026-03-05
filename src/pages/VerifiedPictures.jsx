@@ -36,9 +36,9 @@ export default function VerifiedPictures() {
   return (
     <div className="container container-wide">
       <div className="page-hero">
-        <h1>Verified pictures</h1>
+        <h1>Verified Photo Feed</h1>
         <p>
-          Everything you see here <strong>passed zkVerify</strong>. No AI, no filters—every photo was verified as captured by a real camera. Each entry shows the receipt and verification details. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
+          Everything here <strong>passed zkVerify</strong>. No AI, no filters—every photo was verified as captured by a real camera. Each card shows Proof ID, receipt, and a shareable verification link. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
         </p>
         <p className="concept-inline">
           Nothing gets on ProofPic without verification. What you see here is real.
@@ -51,7 +51,7 @@ export default function VerifiedPictures() {
             <CheckIcon />
           </div>
           <h2>No verified photos yet</h2>
-          <p>Everything on this page has passed zkVerify—real cameras only. Verify a photo on the <strong>Verify photo</strong> page (use the original from your camera or phone), then it'll show up here.</p>
+          <p>Everything on this feed has passed zkVerify—real cameras only. Verify a photo on the <strong>Verify photo</strong> page (use the original from your camera or phone), then it will show up here.</p>
           <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
         </div>
       ) : (
@@ -87,13 +87,14 @@ export default function VerifiedPictures() {
                     )}
                   </div>
                   <dl className="verified-card-receipt">
-                    <dt>Receipt ID</dt>
-                    <dd>{item.receiptId}</dd>
+                    <dt>Proof ID</dt>
+                    <dd className="mono">{item.receiptId}</dd>
                     <dt>Tx hash</dt>
                     <dd className="mono">{item.txHash}</dd>
                     <dt>Image hash</dt>
                     <dd className="mono">{item.imageHash}</dd>
                   </dl>
+                  <NavLink to={`/v/${encodeURIComponent(item.receiptId)}`} className="verified-card-link">View public receipt</NavLink>
                 </div>
               </li>
             ))}
@@ -103,7 +104,7 @@ export default function VerifiedPictures() {
 
       <div className="card reviewer-note-card">
         <h2>For reviewers</h2>
-        <p>This page shows all photos verified in this session (stored in <code>localStorage</code>). Each card includes the zkVerify receipt ID and transaction hash that would appear on-chain in production. Verification flow: upload original photo → hash → attestation → ZK proof → zkVerify.</p>
+        <p>This feed shows all photos verified in this session (stored in <code>localStorage</code>). Each card includes Proof ID, receipt, and a link to the public verification page. Flow: upload original photo → metadata check → hash → attestation → ZK proof → zkVerify.</p>
       </div>
     </div>
   )

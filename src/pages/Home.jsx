@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { CameraIcon, ShieldIcon, ChainIcon } from '../components/Icons'
 
 function ForReviewersHome() {
   const [open, setOpen] = useState(false)
@@ -15,12 +16,21 @@ function ForReviewersHome() {
       </button>
       {open && (
         <div className="reviewer-content">
-          <ol>
-            <li><strong>Verify photo</strong> — Upload an image (use the original from camera/phone, not from social apps). Run the flow and confirm you see: hash → attestation → proof → zkVerify → badge + receipt.</li>
-            <li><strong>Verified pictures</strong> — After verifying, open this tab to see the photo listed with receipt ID, tx hash, and image hash.</li>
-            <li><strong>Original-only</strong> — The app states that photos from Facebook, Viber, WhatsApp, or downloads cannot be fully verified (recompression/metadata stripping).</li>
-            <li>This is a <strong>demo</strong>: attestation and zkVerify are simulated. Production would use Play Integrity / App Attest and real Groth16 proofs on zkVerify.</li>
-          </ol>
+          <p className="reviewer-paragraph">
+            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). Because real hardware-backed camera attestation is not yet integrated, the demo approximates “original capture” using EXIF and metadata heuristics. Images that appear edited, re-saved, or missing camera metadata are rejected. In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
+          </p>
+          <p className="reviewer-note-inner"><strong>Reviewer test checklist:</strong></p>
+          <ul className="reviewer-checklist">
+            <li><strong>Test 1 — Original camera photo:</strong> Upload a photo directly from your phone camera. Expected: Verified Real Photo.</li>
+            <li><strong>Test 2 — Edited image:</strong> Open a photo in Paint or another editor, save, then upload. Expected: Not verified — edited image detected.</li>
+            <li><strong>Test 3 — Screenshot:</strong> Upload a screenshot. Expected: Not verified (screenshot or missing metadata).</li>
+            <li><strong>Test 4 — Downloaded image:</strong> Download an image from the web and upload. Expected: Not verified — missing camera metadata.</li>
+          </ul>
+          <ul className="reviewer-checklist">
+            <li><strong>Web2 UX</strong> — No wallets or crypto jargon; mainstream-friendly.</li>
+            <li><strong>Proof volume</strong> — Repeat uploads + shareable receipts support milestones (25K → 250K proofs or 250 → 2.5K users).</li>
+            <li><strong>Direct zkVerify consumer</strong> — We submit proofs to zkVerify; not infrastructure for others.</li>
+          </ul>
         </div>
       )}
     </div>
@@ -46,31 +56,49 @@ export default function Home() {
           <strong>Use the original photo</strong> — Upload directly from your camera or phone (the file as saved by your device). Do not use a photo shared via Facebook, Viber, WhatsApp, or saved from the web; those copies are often recompressed and we cannot verify them.
         </div>
         <p className="hero-note">
-          This demo simulates the full flow: image hash → device attestation → ZK proof → zkVerify. In production, proofs are verified on zkVerify (Groth16).
+          This demo simulates the full flow. Best on modern Android/iOS with hardware attestation; web fallbacks limited. In production, proofs are verified on zkVerify (Groth16).
         </p>
+        <div className="flow-strip" aria-label="Verification flow">
+          <span className="flow-strip-step"><strong>1.</strong> Upload</span>
+          <span className="flow-strip-arrow" aria-hidden="true">→</span>
+          <span className="flow-strip-step"><strong>2.</strong> Hash + Attest</span>
+          <span className="flow-strip-arrow" aria-hidden="true">→</span>
+          <span className="flow-strip-step"><strong>3.</strong> ZK proof</span>
+          <span className="flow-strip-arrow" aria-hidden="true">→</span>
+          <span className="flow-strip-step"><strong>4.</strong> Badge</span>
+        </div>
       </div>
 
       <div className="home-cards-grid">
         <div className="card card-highlight">
-          <h2>How it works</h2>
+          <h2 className="card-title-with-icon">
+            <CameraIcon />
+            How it works
+          </h2>
           <p>
             You upload or take a photo in our app. We compute a hash, request a signed statement from your device (attestation), generate a ZK proof that the photo came from genuine hardware, and submit it to <strong>zkVerify</strong>. You get a shareable <strong>Verified Real Photo</strong> badge—no identity or raw image is revealed to the verifier.
           </p>
-          <NavLink to="/verify" className="card-cta">Verify a photo →</NavLink>
+          <NavLink to="/verify" className="card-cta"><CameraIcon /> Verify a photo →</NavLink>
         </div>
 
         <div className="card">
-          <h2>What you get</h2>
+          <h2 className="card-title-with-icon">
+            <ShieldIcon />
+            What you get
+          </h2>
           <ul className="bullet-list">
             <li>A <strong>Verified Real Photo</strong> badge you can share (e.g. dating, marketplace, portfolio).</li>
             <li>A <strong>receipt</strong> (ID + tx hash) that links to on-chain verification on zkVerify.</li>
             <li>Your photo is <strong>not stored</strong> on our servers; we only use it to compute a hash and run verification.</li>
           </ul>
-          <NavLink to="/verify" className="card-cta">Get started</NavLink>
+          <NavLink to="/verify" className="card-cta"><ShieldIcon /> Get started</NavLink>
         </div>
 
         <div className="card">
-          <h2>Why real matters</h2>
+          <h2 className="card-title-with-icon">
+            <ShieldIcon />
+            Why real matters
+          </h2>
           <p>
             Deepfakes and AI-generated images are everywhere. Filters make "real" meaningless. We're building the opposite: a place where <strong>every photo is verified from a real camera</strong>. Dating, portfolios, marketplaces, journalism—when it's on ProofPic, it passed the test.
           </p>
@@ -78,12 +106,23 @@ export default function Home() {
         </div>
 
         <div className="card">
-          <h2>Use cases</h2>
+          <h2 className="card-title-with-icon">
+            <ChainIcon />
+            Use cases
+          </h2>
           <p>
             Dating profiles, freelance portfolios, marketplace listings, journalism, social media—anywhere you need to show that a photo is authentic and from a real camera, not AI or deepfake.
           </p>
-          <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
+          <NavLink to="/verify" className="card-cta"><ChainIcon /> Verify a photo</NavLink>
         </div>
+      </div>
+
+      <div className="card card-highlight dating-cta-card">
+        <h2 className="card-title-with-icon"><ShieldIcon /> Verify your dating profile photo</h2>
+        <p>
+          Dating apps are full of AI photos and fake profiles. Get a <strong>Verified Real Photo</strong> badge: upload your photo, we verify it came from a real camera, then share the badge or receipt link on your profile. One less reason for anyone to doubt you&apos;re real.
+        </p>
+        <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
       </div>
 
       <ForReviewersHome />

@@ -39,6 +39,12 @@ export function removeVerified(id) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(list))
 }
 
+/** Get a single verified entry by receiptId (for public receipt page). */
+export function getVerifiedByReceiptId(receiptId) {
+  const list = getVerifiedList()
+  return list.find((item) => item.receiptId === receiptId) || null
+}
+
 export function clearAllVerified() {
   localStorage.removeItem(STORAGE_KEY)
 }

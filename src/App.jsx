@@ -2,6 +2,7 @@ import { NavLink, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import VerifyPhoto from './pages/VerifyPhoto'
 import VerifiedPictures from './pages/VerifiedPictures'
+import VerificationReceipt from './pages/VerificationReceipt'
 import ThemeToggle from './components/ThemeToggle'
 
 export default function App() {
@@ -21,7 +22,7 @@ export default function App() {
             <nav className="nav-links" aria-label="Main navigation">
               <NavLink to="/" end>Home</NavLink>
               <NavLink to="/verify">Verify photo</NavLink>
-              <NavLink to="/verified">Verified pictures</NavLink>
+              <NavLink to="/verified">Verified feed</NavLink>
             </nav>
           </div>
         </div>
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/verify" element={<VerifyPhoto />} />
           <Route path="/verified" element={<VerifiedPictures />} />
+          <Route path="/v/:receiptId" element={<VerificationReceipt />} />
         </Routes>
       </main>
 

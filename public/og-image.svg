@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f0f4ff"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1877f2"/>
+      <stop offset="100%" style="stop-color:#166fe5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Shield icon (simplified) -->
+  <path fill="url(#accent)" opacity="0.15" d="M600 120c-120 0-220 60-220 180v90c0 120 100 180 220 210 120-30 220-90 220-210v-90C820 180 720 120 600 120z"/>
+  <path fill="none" stroke="#1877f2" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" d="M600 140c-100 0-180 50-180 160v80c0 100 80 150 180 180 100-30 180-80 180-180v-80C780 190 700 140 600 140z"/>
+  <!-- Brand -->
+  <text x="600" y="320" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="700" fill="#050505">ProofPic</text>
+  <text x="600" y="400" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="500" fill="#65676b">Real Photos Only. No AI. No Filters.</text>
+  <text x="600" y="460" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#8a8d91">Every image verified from a real camera · zkVerify</text>
+  <!-- Accent line -->
+  <rect x="400" y="500" width="400" height="4" rx="2" fill="url(#accent)"/>
+</svg>

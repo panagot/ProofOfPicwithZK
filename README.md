@@ -35,6 +35,10 @@ All crypto and zkVerify are **simulated** in the browser. Production would use:
 - `src/mock/verification.js` — Simulated hash, attestation, proof, and zkVerify.
 - `IDEA-ProofPic.md` — Proposal and program-fit notes for Thrive zkVerify Web2.
 
+## Sharing (Open Graph)
+
+`index.html` includes Open Graph and Twitter Card meta tags. The share image is `public/og-image.svg` (1200×630, ProofPic branding). Some platforms (e.g. Facebook, LinkedIn) prefer PNG/JPEG; for maximum compatibility you can add `public/og-image.png` at 1200×630 and point `og:image` / `twitter:image` to it.
+
 ## Design
 
-UI and styling are adapted from the [ZK proof](../ZK%20proof) project (dark theme, cards, step indicator, success state).
+UI and styling are adapted from the [ZK proof](../ZK%20proof) project. Card icons (camera, shield, chain) and flow strip on Home; light/dark theme toggle.
