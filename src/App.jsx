@@ -2,6 +2,7 @@ import { NavLink, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import VerifyPhoto from './pages/VerifyPhoto'
 import VerifiedPictures from './pages/VerifiedPictures'
+import ThemeToggle from './components/ThemeToggle'
 
 export default function App() {
   return (
@@ -15,11 +16,14 @@ export default function App() {
             <span className="logo-sublabel">Real only</span>
             <span className="mode-badge" aria-label="Demo mode">Demo</span>
           </NavLink>
-          <nav className="nav-links" aria-label="Main navigation">
-            <NavLink to="/" end>Home</NavLink>
-            <NavLink to="/verify">Verify photo</NavLink>
-            <NavLink to="/verified">Verified pictures</NavLink>
-          </nav>
+          <div className="header-theme-wrap">
+            <ThemeToggle />
+            <nav className="nav-links" aria-label="Main navigation">
+              <NavLink to="/" end>Home</NavLink>
+              <NavLink to="/verify">Verify photo</NavLink>
+              <NavLink to="/verified">Verified pictures</NavLink>
+            </nav>
+          </div>
         </div>
       </header>
 
