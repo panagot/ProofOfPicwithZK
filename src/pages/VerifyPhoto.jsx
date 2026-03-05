@@ -139,14 +139,27 @@ export default function VerifyPhoto() {
           <strong>Demo limitations</strong> — This demonstration uses simple metadata heuristics to approximate authenticity checks. It does not perform advanced forensic analysis and cannot detect all possible edits. In production, ProofPic would rely on hardware-backed device attestation at capture time.
         </div>
 
+        <div className="verification-pipeline-visual" role="region" aria-label="Verification pipeline">
+          <h3 className="pipeline-title">Verification pipeline</h3>
+          <ol className="pipeline-steps">
+            <li><span className="pipeline-check" aria-hidden>✓</span> Camera metadata checked</li>
+            <li><span className="pipeline-check" aria-hidden>✓</span> No edit / re-save markers</li>
+            <li><span className="pipeline-check" aria-hidden>✓</span> Image hash generated</li>
+            <li><span className="pipeline-check" aria-hidden>✓</span> Device attestation validated</li>
+            <li><span className="pipeline-check" aria-hidden>✓</span> ZK proof created</li>
+            <li><span className="pipeline-check" aria-hidden>✓</span> Verified on zkVerify</li>
+          </ol>
+          <p className="pipeline-note muted"><NavLink to="/v/demo">View sample receipt</NavLink> (for reviewers)</p>
+        </div>
+
         <div className="demo-limitation-callout" role="note">
-          <strong>For reviewers</strong> — We simulate the full pipeline (image hash → device attestation → ZK proof → zkVerify) and approximate “original capture” using EXIF and metadata. We reject when: EXIF is missing; Software tag indicates an editor; no Make/Model; PNG or screenshot-like filename; or the <strong>file save time is much later than the EXIF capture date</strong> (re-save heuristic—e.g. photo edited in Paint and saved later). In production, verification would occur at capture time on the device. <strong>Test:</strong> (1) Original camera photo → Verified. (2) Same photo after editing in Paint and saving → Not verified (re-saved). (3) Screenshot or downloaded image → Not verified.
+          <strong>For reviewers</strong> — We simulate the full pipeline and approximate “original capture” using EXIF and metadata. We reject when: EXIF is missing; Software (if present) indicates an editor; no Make/Model; PNG or screenshot filename; or file save time is <strong>24+ hours</strong> after EXIF capture (re-save). We do not require a Software tag. In production, verification would occur at capture time on the device. <strong>Test:</strong> (1) Original camera photo → Verified. (2) Same photo after editing in Paint and saving → Not verified (re-saved). (3) Screenshot or downloaded image → Not verified.
         </div>
 
         <div className="info-blocks">
           <div className="info-block">
             <h3>What we verify</h3>
-            <p>That the image was captured by <strong>genuine device hardware</strong> (not a screenshot, edited file, or AI-generated image). We compute a hash, bind it to your device attestation, and produce a ZK proof verified on zkVerify. We do not identify you—only that this photo came from a real camera.</p>
+            <p>That the image was captured by <strong>genuine device hardware</strong> and <strong>not edited after capture</strong> (not a screenshot or re-saved file). We compute a hash, bind it to your device attestation, and produce a ZK proof verified on zkVerify. We do not identify you—only that this photo came from a real camera.</p>
           </div>
           <div className="info-block">
             <h3>Your privacy</h3>

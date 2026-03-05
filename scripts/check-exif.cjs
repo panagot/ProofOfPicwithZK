@@ -18,7 +18,7 @@ const TAG_NAMES = {
   0x9003: 'DateTimeOriginal',
 }
 
-const RESAVE_THRESHOLD_MS = 2 * 60 * 60 * 1000 // 2 hours
+const RESAVE_THRESHOLD_MS = 24 * 60 * 60 * 1000 // 24 hours (align with app)
 
 function parseExifDateTime(str) {
   if (!str || str.length < 19) return null

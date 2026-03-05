@@ -260,6 +260,28 @@ html:not([data-theme="dark"]) .hero h1 {
   font-weight: 600;
   user-select: none;
 }
+
+.why-verification-matters {
+  margin: var(--space-2xl) 0;
+  padding: var(--space-xl);
+  background: var(--bg-muted);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+.why-verification-title { font-size: var(--text-lg); font-weight: 600; margin: 0 0 var(--space-sm); color: var(--text); }
+.why-verification-intro { margin: 0 0 var(--space-md); font-size: var(--text-base); color: var(--text-muted); line-height: 1.55; }
+.why-verification-list { margin: 0; padding-left: var(--space-xl); color: var(--text-muted); }
+.why-verification-list li { margin-bottom: 0.35rem; }
+
+.verification-collections { margin: var(--space-2xl) 0; }
+.collections-title { font-size: var(--text-xl); font-weight: 600; margin: 0 0 var(--space-sm); color: var(--text); }
+.collections-intro { margin: 0 0 var(--space-lg); font-size: var(--text-base); color: var(--text-muted); max-width: 56ch; }
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
 .hero-tagline {
   display: inline-block;
   font-size: var(--text-xs);
@@ -489,6 +511,20 @@ html[data-theme="dark"] .upload-requirement {
 .instruction-label { min-width: 4.5rem; font-weight: 600; color: var(--text-muted); }
 .instruction-correct .instruction-label { color: var(--success); }
 .instruction-incorrect { color: var(--text-dim); }
+
+.verification-pipeline-visual {
+  margin: var(--space-xl) 0;
+  padding: var(--space-lg);
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.pipeline-title { font-size: var(--text-base); font-weight: 600; margin: 0 0 var(--space-md); color: var(--text); }
+.pipeline-steps { list-style: none; margin: 0; padding: 0; font-size: var(--text-sm); color: var(--text-muted); }
+.pipeline-steps li { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
+.pipeline-check { color: var(--success); font-weight: 700; }
+.pipeline-note { margin: var(--space-md) 0 0; font-size: var(--text-sm); }
+.pipeline-note a { color: var(--accent); font-weight: 500; }
 
 .demo-disclaimer {
   margin: var(--space-lg) 0;
@@ -802,6 +838,7 @@ html:not([data-theme="dark"]) .info-block {
 .receipt-page-thumb { margin: var(--space-lg) 0; text-align: center; }
 .receipt-page-thumb img { max-width: 200px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
 .receipt-page-note { margin: var(--space-lg) 0 0; font-size: var(--text-sm); }
+.receipt-page-demo-badge { margin: 0 0 var(--space-md); font-size: var(--text-sm); font-weight: 600; }
 .receipt-page-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: var(--space-xl); }
 
 /* Forms */

@@ -102,10 +102,10 @@ export async function demoEditCheck(file) {
           }
         }
         if (softwareIsEditor) return { pass: false, reasonKey: 'edited' }
-        if (!hasSoftware) return { pass: false, reasonKey: 'no_software' }
+        // Do not require Software tag — many genuine camera photos omit it (ChatGPT/Grok feedback). Only reject when Software is present and matches an editor.
         if (!hasMakeOrModel) return { pass: false, reasonKey: 'no_camera_fields' }
-        // Re-save heuristic: file lastModified much later than EXIF DateTime suggests re-save (e.g. edited in Paint)
-        const RESAVE_THRESHOLD_MS = 2 * 60 * 60 * 1000 // 2 hours
+        // Re-save heuristic: file lastModified much later than EXIF DateTime suggests re-save (e.g. edited in Paint). 24h window to avoid false rejections when camera syncs files later (feedback).
+        const RESAVE_THRESHOLD_MS = 24 * 60 * 60 * 1000 // 24 hours
         if (exifDateTime != null && file.lastModified != null) {
           const fileTime = file.lastModified
           if (fileTime > exifDateTime + RESAVE_THRESHOLD_MS) {

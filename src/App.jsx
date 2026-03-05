@@ -40,7 +40,7 @@ export default function App() {
       <footer className="site-footer">
         <div className="footer-container">
           <p className="footer-tagline">
-            ProofPic — We're fighting for genuine photos. Real cameras only; nothing gets in without passing <a href="https://zkverify.io" target="_blank" rel="noopener noreferrer">zkVerify</a>. No AI, no filters. This demo simulates the flow; production uses device attestation and Groth16 proofs.
+            ProofPic — We're fighting for genuine photos. Real cameras only; nothing gets in without passing <a href="https://zkverify.io" target="_blank" rel="noopener noreferrer">zkVerify</a>. Captured by a real camera, not edited after capture. <NavLink to="/v/demo">Sample receipt</NavLink>. This demo simulates the flow; production uses device attestation and Groth16 proofs.
           </p>
         </div>
       </footer>

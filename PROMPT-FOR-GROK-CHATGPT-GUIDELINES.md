@@ -1,84 +1,44 @@
-# ProofPic — Problem, Goals, and Request for Guidelines
+# ProofPic — Brief for fresh feedback (Grok / ChatGPT)
 
-*Use this document to brief Grok, ChatGPT, or other AIs when asking for guidelines on verification logic, UX, or product direction.*
-
----
-
-## The problem we're solving
-
-- **Flood of synthetic and edited imagery:** Deepfakes, AI-generated images, and heavily edited photos make it hard to trust that a photo is a genuine capture from a real camera. People want to prove that an image is “real” (from a real device, not AI, not doctored) for dating, marketplaces, portfolios, journalism, and social credibility.
-
-- **No simple, verifiable signal:** Today there’s no widely adopted way to cryptographically prove “this image was captured by this camera at this time” without trusting a central party with the raw file. We want to tie authenticity to **device attestation** and **zero-knowledge proofs** so that verifiers see only “this photo passed” (e.g. on zkVerify), not the image or identity.
-
-- **Edited vs original:** Even when a photo starts from a real camera, **any edit** (crops, filters, Paint-style annotations, re-saves, screenshots, copies from messaging apps) can change the file and break the chain of trust. So “genuine” must mean: **original capture from the device**, or at least **no post-capture edits** that we can detect or that break the attestation binding.
+*Send this to get a new round of feedback. The product and demo have evolved; we want your honest take on what’s strong, what’s missing, and what would help most for the grant application.*
 
 ---
 
-## What ProofPic is trying to achieve (in general)
+## What ProofPic is
 
-1. **Product, not infrastructure**  
-   Users come to **our** app to verify their photos and get a shareable “Verified Real Photo” badge. We run the platform and the verification flow. We are **not** building an API/SDK for other companies to integrate.
+**ProofPic** is a web app where users upload a photo and get a **Verified Real Photo** badge backed by a zero-knowledge proof that the image was captured by a real camera (not AI-generated, not meaningfully edited). We’re applying to the **Thrive zkVerify Web2 Program** (authenticity verification; “authenticate that an image was captured by a specific camera”). We run the product ourselves—no API/SDK for other companies.
 
-2. **One clear promise**  
-   “This image was captured by a **real camera** (genuine device hardware) and has **not** been AI-generated or meaningfully edited in a way that breaks authenticity.” In production, that would be enforced by:
-   - **Capture-time binding:** The device (camera app / our app) hashes the image and gets a hardware-backed attestation **before** the file is exported or edited.
-   - **ZK proof:** We prove “I know an image hash H and a valid attestation from a certified genuine device for H” and submit to zkVerify. An edited or re-saved copy would have a different H and no valid attestation, so it would **not** verify.
-
-3. **Mainstream UX**  
-   No wallets, no crypto jargon. User: “Upload or take a photo → we verify it → you get a badge and a receipt.” Verification happens in the background; the output is “Verified” or “Not verified” with a clear reason.
-
-4. **Traction path**  
-   Use cases: dating profiles, freelance portfolios, marketplaces, journalism, social authenticity. Optional “verified feed” where only verified photos appear. Program milestones (e.g. 25K proofs or 250 users, then 250K proofs or 2.5K users) drive how we position the product.
-
-5. **Demo vs production**  
-   Our **current demo** simulates the full flow (hash → attestation → ZK proof → zkVerify). We don’t have real device attestation yet, so we use **heuristics** (e.g. EXIF: presence of EXIF, Software tag, editor names) to **reject** images that look edited or re-saved, so that reviewers see the intended behavior: “edited = not verified.” In **production**, verification would be at capture time on the device; edited copies would fail because they wouldn’t have a valid attestation for their hash.
+**Promise:** “This photo came from a real camera and wasn’t edited or re-saved in a way that breaks trust.” In production we’d enforce that with **capture-time attestation** on the device (hash + hardware-backed signature before the file is ever exported or edited). Edited copies would have a different hash and no valid attestation, so they’d fail.
 
 ---
 
-## What we need guidelines on
+## What we’ve built (current demo)
 
-We’d like **concrete, actionable guidelines** from you (Grok / ChatGPT) on the following. You can assume the context above.
+- **Live flow:** Upload photo → EXIF/metadata check → (if pass) simulated hash → attestation → ZK proof → zkVerify → **Verified Real Photo** and receipt. Failures show **Not verified** with a clear reason.
+- **Rejection rules (demo heuristics):**
+  - No EXIF → reject.
+  - EXIF but **Software** tag matches known editors (Paint, Microsoft, Adobe, Photoshop, GIMP, Canva, Snapseed, Lightroom, WhatsApp, Instagram, etc.) → reject.
+  - No **Software** tag or no **Make/Model** in EXIF → reject.
+  - **PNG** → reject (we only accept JPEG for verification).
+  - Filename looks like **screenshot** (e.g. `Screenshot`, `IMG_*-WA`) → reject.
+  - **Re-save heuristic:** If the file’s last-modified time is more than **2 hours** after the EXIF capture date, we reject as “re-saved or modified” (e.g. edited in Paint and saved later).
+- **Public verification receipt:** Each verified photo gets a shareable page `/v/:receiptId` with Proof ID, verification time, hash, “Verified on zkVerify,” and optional thumbnail.
+- **Verified Photo Feed:** List of verified photos with Proof ID and “View public receipt” link (stored in browser for demo).
+- **Dating CTA:** Home has a “Verify your dating profile photo” section.
+- **Reviewer content:** Collapsible “For reviewers” on Home and Verify with paragraph (demo heuristics vs production capture-time) and test checklist: (1) Original camera photo → Verified. (2) Same photo after editing in Paint and saving → Not verified (re-saved). (3) Screenshot / downloaded image → Not verified.
+- **Disclaimers:** We state that the demo uses metadata heuristics, doesn’t do forensic analysis, and that production would use hardware attestation at capture time.
+- **Script:** We have `scripts/check-exif.cjs` to run the same EXIF checks on a local file (for debugging).
 
-### 1. When should we treat a photo as “not genuine” in the demo?
-
-- **EXIF:** What rules make sense? (e.g. no EXIF → reject? EXIF but “Software” from a known editor → reject? EXIF but no Software tag → reject or allow?)
-- **Filenames / origins:** Should we use filename patterns or other signals (e.g. “screenshot”, “copy”, “edited”) to reject or warn?
-- **Other metadata or signals:** Any other heuristics (e.g. image dimensions, format, re-compression artifacts) that are reasonable for a **demo** (no ML, no heavy analysis) to “reject as possibly edited or re-saved”?
-
-### 2. How to explain “original only” to users
-
-- **Copy:** Short, clear wording for: “Use the **original** photo from your camera or phone. Do not use a photo that was shared via messaging/social, downloaded from the web, or edited (e.g. in Paint, filters, crop-and-save).”
-- **Failure messages:** When we reject, what exact messages are best for (a) “edited / saved by an editor”, (b) “no EXIF / possibly re-saved”, (c) “other” — so users understand why they were rejected and what to do next.
-
-### 3. Reviewer-facing clarity
-
-- How to describe in one short paragraph that “in this demo we use EXIF/metadata heuristics to approximate ‘edited = not verified’; in production, verification happens at capture time and edited copies would fail attestation.”
-- A minimal **checklist** for program reviewers (e.g. “Try an original camera photo → should pass; try a Paint-edited or re-saved JPEG → should fail with a clear reason”).
-
-### 4. Boundaries of the demo
-
-- What should we **not** promise in the demo? (e.g. “We do not run ML-based edit detection”; “We do not guarantee detection of all edits.”
-- Any disclaimers or caveats we should show in the UI or in reviewer notes?
+**Deployment:** App is deployed (e.g. Vercel); we can share the URL for a live look.
 
 ---
 
-## What we’ve implemented so far (for context)
+## What we want from you (fresh feedback)
 
-- **Demo edit check (EXIF):** For JPEGs we (1) require an EXIF block; (2) require a Software tag in EXIF; (3) reject if Software matches known editors (Paint, Microsoft, Photoshop, GIMP, etc.). No EXIF → reject. No Software tag → reject (to catch re-saved files that kept EXIF but lost Software).
-- **Flow:** Upload → hash (simulated) → attestation (simulated) → ZK proof (simulated) → zkVerify (simulated) → “Verified Real Photo” or “Not verified” with a reason.
-- **UI:** “Not verified” card with the failure reason; copy that says to use the original from camera/phone and not an edited or re-saved copy.
+1. **Overall:** What’s working well? What feels missing or weak for a grant reviewer or an end user?
+2. **Application / pitch:** What would you add, cut, or reframe in the application or in the way we describe ProofPic to maximize chances with the zkVerify program?
+3. **Demo:** Any rejection rules you’d add or relax? Any failure messages you’d reword? Any UX change (e.g. one more screen, one less step) that would make the value or the ZK flow clearer?
+4. **Risks or gaps:** What could reviewers or users reasonably criticize, and how would you address it in the app or in the written application?
+5. **One thing:** If you could only suggest *one* change to the product or the application, what would it be?
 
-We want your guidelines to **refine** these rules and messages (what to reject, how to explain it, what to tell reviewers) so the demo behaves and communicates in a way that matches our goals above.
-
----
-
-## How to respond
-
-Please provide:
-
-1. **Demo rejection rules:** Recommended EXIF/metadata (and any other simple) rules for “reject as possibly edited or re-saved,” with short rationale.
-2. **User-facing copy:** Suggested wording for “use original only” and for 2–3 specific failure reasons.
-3. **Reviewer paragraph + checklist:** One short paragraph and a bullet checklist so reviewers can quickly validate that the demo “works as intended.”
-4. **Caveats / disclaimers:** What we should explicitly not claim or should disclaim in the demo.
-
-You can assume the audience is both **end users** (who want to verify a photo) and **program reviewers** (who need to see that “edited = not verified” and understand the path to production.)
+No need to repeat long guidelines we’ve already implemented. We’re looking for **new** observations and concrete suggestions so we can refine before and after submission.

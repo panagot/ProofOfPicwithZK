@@ -19,13 +19,24 @@ function formatDate(ts) {
   }
 }
 
+const DEMO_RECEIPT = {
+  receiptId: 'zkVerify_receipt_demo_12345',
+  txHash: '0x1a2b3c4d5e6f7890',
+  imageHash: 'H_ZXhhbXBsZV9oYXNo',
+  verifiedAt: Date.now() - 86400000,
+}
+
 export default function VerificationReceipt() {
   const { receiptId } = useParams()
-  const entry = receiptId ? getVerifiedByReceiptId(receiptId) : null
+  const isDemo = receiptId === 'demo'
+  const entry = isDemo ? DEMO_RECEIPT : (receiptId ? getVerifiedByReceiptId(receiptId) : null)
 
   return (
     <div className="container">
       <div className="receipt-page card">
+        {isDemo && (
+          <p className="receipt-page-demo-badge muted" role="status">Sample receipt — for reviewers</p>
+        )}
         <div className="receipt-page-badge">
           <CheckIcon />
           <h1>Verified Real Photo</h1>
@@ -60,13 +71,13 @@ export default function VerificationReceipt() {
           )}
         </dl>
 
-        {entry?.thumbnailDataUrl && (
+        {entry?.thumbnailDataUrl && !isDemo && (
           <div className="receipt-page-thumb">
             <img src={entry.thumbnailDataUrl} alt="" />
           </div>
         )}
 
-        {!entry && receiptId && (
+        {!entry && receiptId && !isDemo && (
           <p className="receipt-page-note muted">
             This verification receipt was submitted to zkVerify. Full details are visible only on the device that performed the verification.
           </p>

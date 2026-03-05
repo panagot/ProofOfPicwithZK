@@ -17,7 +17,7 @@ function ForReviewersHome() {
       {open && (
         <div className="reviewer-content">
           <p className="reviewer-paragraph">
-            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). The demo approximates “original capture” using EXIF and metadata: we reject when EXIF is missing, Software indicates an editor, Make/Model are missing, or the <strong>file save time is much later than the EXIF capture date</strong> (re-save heuristic). In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
+            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). We approximate “original capture” using EXIF and metadata: we reject when EXIF is missing; when <strong>Software</strong> (if present) indicates an editor; when Make/Model are missing; or when the <strong>file save time is 24+ hours after the EXIF capture date</strong> (re-save heuristic). We do not require a Software tag—many cameras omit it. In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
           </p>
           <p className="reviewer-note-inner"><strong>Reviewer test checklist:</strong></p>
           <ul className="reviewer-checklist">
@@ -44,13 +44,23 @@ export default function Home() {
         <p className="hero-tagline">Real photos only. No AI. No filters.</p>
         <h1>We're fighting for genuine photos</h1>
         <p className="hero-sub">
-          ProofPic is the place where every image comes from a <strong>verified real camera</strong>. Nothing gets a badge—and nothing gets on the feed—unless it passes our zkVerify verification. No AI-generated images, no deepfakes. Just proof.
+          ProofPic is the place where every image comes from a <strong>verified real camera</strong> and has <strong>not been edited after capture</strong>. Nothing gets a badge—and nothing gets on the feed—unless it passes our zkVerify verification. Just proof.
         </p>
         <div className="concept-block" role="region" aria-label="Our promise">
           <h2 className="concept-block-title">Nothing gets in without verification</h2>
           <p className="concept-block-text">
-            We're battling the flood of AI slop and filtered reality. Here, every photo is verified on <strong>zkVerify</strong>: we prove it was captured by genuine device hardware. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
+            We're battling the flood of AI slop and filtered reality. Here, every photo is verified on <strong>zkVerify</strong>: we prove it was captured by genuine device hardware and not modified after capture. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
           </p>
+        </div>
+        <div className="why-verification-matters" role="region" aria-label="Why verification matters">
+          <h2 className="why-verification-title">Why verification matters</h2>
+          <p className="why-verification-intro">Trust in digital photos is declining. ProofPic lets anyone prove that a photo was captured by a real camera and has not been edited after capture. This helps build trust in:</p>
+          <ul className="why-verification-list">
+            <li><strong>Dating profiles</strong> — Show your photos are genuine.</li>
+            <li><strong>Marketplaces</strong> — Sellers prove listing photos are real.</li>
+            <li><strong>Freelance portfolios</strong> — Prove your work is authentic.</li>
+            <li><strong>Journalism</strong> — Verify field and citizen photography.</li>
+          </ul>
         </div>
         <div className="hero-requirement" role="note">
           <strong>Use the original photo</strong> — Upload directly from your camera or phone (the file as saved by your device). Do not use a photo shared via Facebook, Viber, WhatsApp, or saved from the web; those copies are often recompressed and we cannot verify them.
@@ -100,7 +110,7 @@ export default function Home() {
             Why real matters
           </h2>
           <p>
-            Deepfakes and AI-generated images are everywhere. Filters make "real" meaningless. We're building the opposite: a place where <strong>every photo is verified from a real camera</strong>. Dating, portfolios, marketplaces, journalism—when it's on ProofPic, it passed the test.
+            Filters and edited images make &quot;real&quot; meaningless. We're building the opposite: a place where <strong>every photo is verified from a real camera and not edited after capture</strong>. When it's on ProofPic, it passed the test.
           </p>
           <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
         </div>
@@ -111,18 +121,32 @@ export default function Home() {
             Use cases
           </h2>
           <p>
-            Dating profiles, freelance portfolios, marketplace listings, journalism, social media—anywhere you need to show that a photo is authentic and from a real camera, not AI or deepfake.
+            Dating profiles, freelance portfolios, marketplace listings, journalism—anywhere you need to show that a photo is authentic and from a real camera, not edited after capture.
           </p>
           <NavLink to="/verify" className="card-cta"><ChainIcon /> Verify a photo</NavLink>
         </div>
       </div>
 
-      <div className="card card-highlight dating-cta-card">
-        <h2 className="card-title-with-icon"><ShieldIcon /> Verify your dating profile photo</h2>
-        <p>
-          Dating apps are full of AI photos and fake profiles. Get a <strong>Verified Real Photo</strong> badge: upload your photo, we verify it came from a real camera, then share the badge or receipt link on your profile. One less reason for anyone to doubt you&apos;re real.
-        </p>
-        <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
+      <div className="verification-collections">
+        <h2 className="collections-title">Verify multiple photos</h2>
+        <p className="collections-intro">ProofPic encourages repeat verification. Verify several photos per listing, portfolio, or profile to build trust and generate more proofs.</p>
+        <div className="collections-grid">
+          <div className="card card-highlight">
+            <h3 className="card-title-with-icon"><ShieldIcon /> Verify your dating profile photo</h3>
+            <p>Dating apps are full of fake and edited photos. Get a <strong>Verified Real Photo</strong> badge and share the receipt link on your profile. Verify multiple photos to show you're real.</p>
+            <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
+          </div>
+          <div className="card">
+            <h3 className="card-title-with-icon"><ChainIcon /> Verify marketplace listing photos</h3>
+            <p>Sellers can verify product photos, packaging, and condition shots. Each verified photo gets a public receipt—build trust and reduce disputes.</p>
+            <NavLink to="/verify" className="card-cta">Verify listing photos →</NavLink>
+          </div>
+          <div className="card">
+            <h3 className="card-title-with-icon"><CameraIcon /> Verify your portfolio</h3>
+            <p>Freelancers and photographers can verify portfolio images so clients know the work is authentic and captured by a real camera.</p>
+            <NavLink to="/verify" className="card-cta">Verify portfolio →</NavLink>
+          </div>
+        </div>
       </div>
 
       <ForReviewersHome />
