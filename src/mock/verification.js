@@ -25,6 +25,17 @@ function readExifString(u8, tiffStart, valueOff, count, len) {
   return str.trim()
 }
 
+/** Parse EXIF DateTime string "YYYY:MM:DD HH:MM:SS" to timestamp, or null. */
+function parseExifDateTime(str) {
+  if (!str || str.length < 19) return null
+  const normalized = str.replace(/\s+/g, ' ').trim()
+  const m = normalized.match(/^(\d{4}):(\d{2}):(\d{2})\s+(\d{2}):(\d{2}):(\d{2})$/)
+  if (!m) return null
+  const [, y, mo, d, h, mi, s] = m
+  const date = new Date(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi), Number(s))
+  return isNaN(date.getTime()) ? null : date.getTime()
+}
+
 /**
  * Demo-only: check if image looks edited or re-saved (ChatGPT/Grok guidelines).
  * Rules: no EXIF → reject; EXIF Software = editor → reject; no Software → reject;
@@ -71,6 +82,7 @@ export async function demoEditCheck(file) {
         let hasSoftware = false
         let softwareIsEditor = false
         let hasMakeOrModel = false
+        let exifDateTime = null // EXIF DateTime (0x0132) or DateTimeOriginal from camera
         for (let t = 0; t < numTags && ifd0 + 2 + (t + 1) * 12 <= len; t++) {
           const tagOff = ifd0 + 2 + t * 12
           const tagId = getU16(tagOff)
@@ -84,12 +96,22 @@ export async function demoEditCheck(file) {
               if (EDITOR_SOFTWARE_PATTERN.test(str)) softwareIsEditor = true
             } else if (tagId === 0x010F || tagId === 0x0110) {
               if (str.length > 0) hasMakeOrModel = true
+            } else if (tagId === 0x0132) {
+              exifDateTime = parseExifDateTime(str)
             }
           }
         }
         if (softwareIsEditor) return { pass: false, reasonKey: 'edited' }
         if (!hasSoftware) return { pass: false, reasonKey: 'no_software' }
         if (!hasMakeOrModel) return { pass: false, reasonKey: 'no_camera_fields' }
+        // Re-save heuristic: file lastModified much later than EXIF DateTime suggests re-save (e.g. edited in Paint)
+        const RESAVE_THRESHOLD_MS = 2 * 60 * 60 * 1000 // 2 hours
+        if (exifDateTime != null && file.lastModified != null) {
+          const fileTime = file.lastModified
+          if (fileTime > exifDateTime + RESAVE_THRESHOLD_MS) {
+            return { pass: false, reasonKey: 'resaved' }
+          }
+        }
         return { pass: true }
       }
       i = dataStart + segLen - 2
@@ -109,6 +131,7 @@ export const FAILURE_MESSAGES = {
   no_camera_fields: 'This photo does not contain camera identifiers (Make/Model). Please upload the original camera photo file.',
   screenshot: 'This file looks like a screenshot. Screenshots cannot be verified as camera captures. Please upload the original photo taken by your camera.',
   unsupported_format: 'PNG files are usually screenshots or exported images. Please upload the original JPEG from your camera.',
+  resaved: 'This file appears to have been re-saved or modified after it was taken (e.g. edited in another app). The save time is much later than the capture time in the photo metadata. Please upload the original photo directly from your camera.',
 }
 
 /** Simulate computing image hash from file. Returns a mock hash. */

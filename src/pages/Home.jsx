@@ -17,12 +17,12 @@ function ForReviewersHome() {
       {open && (
         <div className="reviewer-content">
           <p className="reviewer-paragraph">
-            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). Because real hardware-backed camera attestation is not yet integrated, the demo approximates “original capture” using EXIF and metadata heuristics. Images that appear edited, re-saved, or missing camera metadata are rejected. In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
+            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). The demo approximates “original capture” using EXIF and metadata: we reject when EXIF is missing, Software indicates an editor, Make/Model are missing, or the <strong>file save time is much later than the EXIF capture date</strong> (re-save heuristic). In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
           </p>
           <p className="reviewer-note-inner"><strong>Reviewer test checklist:</strong></p>
           <ul className="reviewer-checklist">
             <li><strong>Test 1 — Original camera photo:</strong> Upload a photo directly from your phone camera. Expected: Verified Real Photo.</li>
-            <li><strong>Test 2 — Edited image:</strong> Open a photo in Paint or another editor, save, then upload. Expected: Not verified — edited image detected.</li>
+            <li><strong>Test 2 — Edited or re-saved image:</strong> Open a photo in Paint (or another editor), save, then upload. Expected: Not verified — re-saved or edited (save time &gt; capture time).</li>
             <li><strong>Test 3 — Screenshot:</strong> Upload a screenshot. Expected: Not verified (screenshot or missing metadata).</li>
             <li><strong>Test 4 — Downloaded image:</strong> Download an image from the web and upload. Expected: Not verified — missing camera metadata.</li>
           </ul>

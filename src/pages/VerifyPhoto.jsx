@@ -37,8 +37,8 @@ function ForReviewersVerify() {
         <div className="reviewer-content">
           <ul>
             <li>Use a photo <strong>from your device gallery or camera</strong> (original file). Do not use a screenshot or a photo saved from WhatsApp/Viber/Facebook.</li>
-            <li>Click &quot;Verify this photo&quot; and watch the steps: hash → attestation → proof → zkVerify (simulated).</li>
-            <li>After success, open <strong>Verified pictures</strong> in the nav to see the entry with receipt ID and tx hash.</li>
+            <li>We reject re-saved files: if the file was saved long after the capture date (e.g. after editing in Paint), you’ll see “re-saved or modified.”</li>
+            <li>Click &quot;Verify this photo&quot; and watch the steps: hash → attestation → proof → zkVerify (simulated). After success, open <strong>Verified feed</strong> and the public receipt link.</li>
             <li>In production: real device attestation (Play Integrity / App Attest), Groth16 proof, and on-chain zkVerify submission.</li>
           </ul>
         </div>
@@ -140,7 +140,7 @@ export default function VerifyPhoto() {
         </div>
 
         <div className="demo-limitation-callout" role="note">
-          <strong>For reviewers</strong> — In this demo we simulate the full pipeline (image hash → device attestation → ZK proof → zkVerify). We approximate “original capture” using EXIF and metadata: images that appear edited, re-saved, or missing camera metadata are rejected. In production, verification would occur at capture time on the device. <strong>Test:</strong> (1) Original camera photo → Verified. (2) Edited image (e.g. Paint) → Not verified. (3) Screenshot or downloaded image → Not verified.
+          <strong>For reviewers</strong> — We simulate the full pipeline (image hash → device attestation → ZK proof → zkVerify) and approximate “original capture” using EXIF and metadata. We reject when: EXIF is missing; Software tag indicates an editor; no Make/Model; PNG or screenshot-like filename; or the <strong>file save time is much later than the EXIF capture date</strong> (re-save heuristic—e.g. photo edited in Paint and saved later). In production, verification would occur at capture time on the device. <strong>Test:</strong> (1) Original camera photo → Verified. (2) Same photo after editing in Paint and saving → Not verified (re-saved). (3) Screenshot or downloaded image → Not verified.
         </div>
 
         <div className="info-blocks">
