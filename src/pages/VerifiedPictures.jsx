@@ -38,7 +38,7 @@ export default function VerifiedPictures() {
       <div className="page-hero">
         <h1>Verified Photo Feed</h1>
         <p>
-          Everything here <strong>passed zkVerify</strong>. No AI, no filters—every photo was verified as captured by a real camera. Each card shows Proof ID, receipt, and a shareable verification link. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
+          Everything here <strong>passed zkVerify</strong>. Every photo was verified as captured by a real camera and not edited after capture. Each card shows Proof ID, receipt, and a shareable verification link. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
         </p>
         <p className="concept-inline">
           Nothing gets on ProofPic without verification. What you see here is real.
@@ -53,6 +53,9 @@ export default function VerifiedPictures() {
           <h2>No verified photos yet</h2>
           <p>Everything on this feed has passed zkVerify—real cameras only. Verify a photo on the <strong>Verify photo</strong> page (use the original from your camera or phone), then it will show up here.</p>
           <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
+          <div style={{ marginTop: '0.75rem' }}>
+            <NavLink to="/v/demo" className="btn-text">Or view a sample receipt</NavLink>
+          </div>
         </div>
       ) : (
         <>

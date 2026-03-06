@@ -82,6 +82,8 @@ export async function demoEditCheck(file) {
         let hasSoftware = false
         let softwareIsEditor = false
         let hasMakeOrModel = false
+        let exifMake = ''
+        let exifModel = ''
         let exifDateTime = null // EXIF DateTime (0x0132) or DateTimeOriginal from camera
         for (let t = 0; t < numTags && ifd0 + 2 + (t + 1) * 12 <= len; t++) {
           const tagOff = ifd0 + 2 + t * 12
@@ -94,8 +96,10 @@ export async function demoEditCheck(file) {
             if (tagId === 0x0131) {
               hasSoftware = true
               if (EDITOR_SOFTWARE_PATTERN.test(str)) softwareIsEditor = true
-            } else if (tagId === 0x010F || tagId === 0x0110) {
-              if (str.length > 0) hasMakeOrModel = true
+            } else if (tagId === 0x010F) {
+              if (str.length > 0) { hasMakeOrModel = true; exifMake = str }
+            } else if (tagId === 0x0110) {
+              if (str.length > 0) { hasMakeOrModel = true; exifModel = str }
             } else if (tagId === 0x0132) {
               exifDateTime = parseExifDateTime(str)
             }
@@ -104,15 +108,16 @@ export async function demoEditCheck(file) {
         if (softwareIsEditor) return { pass: false, reasonKey: 'edited' }
         // Do not require Software tag — many genuine camera photos omit it (ChatGPT/Grok feedback). Only reject when Software is present and matches an editor.
         if (!hasMakeOrModel) return { pass: false, reasonKey: 'no_camera_fields' }
-        // Re-save heuristic: file lastModified much later than EXIF DateTime suggests re-save (e.g. edited in Paint). 24h window to avoid false rejections when camera syncs files later (feedback).
-        const RESAVE_THRESHOLD_MS = 24 * 60 * 60 * 1000 // 24 hours
+        // Re-save heuristic: file lastModified after EXIF capture time suggests the file was re-saved (e.g. edited in Paint). Only allow a few seconds tolerance for camera write delay and clock skew.
+        const RESAVE_TOLERANCE_MS = 5 * 1000 // 5 seconds: catch any save after capture (Paint, editor, copy)
         if (exifDateTime != null && file.lastModified != null) {
           const fileTime = file.lastModified
-          if (fileTime > exifDateTime + RESAVE_THRESHOLD_MS) {
+          if (fileTime > exifDateTime + RESAVE_TOLERANCE_MS) {
             return { pass: false, reasonKey: 'resaved' }
           }
         }
-        return { pass: true }
+        const deviceLabel = [exifMake, exifModel].filter(Boolean).join(' ').trim() || null
+        return { pass: true, exif: { make: exifMake, model: exifModel, captureTime: exifDateTime, deviceLabel } }
       }
       i = dataStart + segLen - 2
       continue
@@ -131,7 +136,7 @@ export const FAILURE_MESSAGES = {
   no_camera_fields: 'This photo does not contain camera identifiers (Make/Model). Please upload the original camera photo file.',
   screenshot: 'This file looks like a screenshot. Screenshots cannot be verified as camera captures. Please upload the original photo taken by your camera.',
   unsupported_format: 'PNG files are usually screenshots or exported images. Please upload the original JPEG from your camera.',
-  resaved: 'This file appears to have been re-saved or modified after it was taken (e.g. edited in another app). The save time is much later than the capture time in the photo metadata. Please upload the original photo directly from your camera.',
+  resaved: 'This file appears to have been re-saved or modified after it was taken (e.g. edited in Paint or another app). The file save time is after the capture time in the photo metadata. Please upload the original photo directly from your camera.',
 }
 
 /** Simulate computing image hash from file. Returns a mock hash. */
@@ -207,6 +212,7 @@ export async function runVerificationFlow(file, onStep) {
   const proof = await simulateProofGeneration(imageHash, attestation)
   onStep?.('zkverify')
   const result = await simulateZkVerifySubmit(proof)
+  const exif = editCheck.exif || {}
   return {
     imageHash,
     attestation,
@@ -214,5 +220,7 @@ export async function runVerificationFlow(file, onStep) {
     receiptId: result.receiptId,
     txHash: result.txHash,
     verifiedAt: Date.now(),
+    deviceMakeModel: exif.deviceLabel || null,
+    captureTime: exif.captureTime != null ? exif.captureTime : null,
   }
 }

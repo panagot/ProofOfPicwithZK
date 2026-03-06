@@ -4,7 +4,8 @@
  */
 
 const STORAGE_KEY = 'proofpic_verified_photos'
-const MAX_THUMBNAIL_SIZE = 160
+/** Thumbnail longest edge (px). Large enough for feed cards (~280px+) so images stay sharp when displayed. */
+const MAX_THUMBNAIL_SIZE = 400
 
 export function getVerifiedList() {
   try {
@@ -53,7 +54,7 @@ export function clearAllVerified() {
  * Create a small thumbnail data URL from a File (image).
  * @param {File} file
  * @param {number} maxSize
- * @returns {Promise<string|null>}
+ * @returns {Promise<{ dataUrl: string|null, width: number, height: number }|null>}
  */
 export function createThumbnailDataUrl(file, maxSize = MAX_THUMBNAIL_SIZE) {
   return new Promise((resolve) => {
@@ -61,6 +62,8 @@ export function createThumbnailDataUrl(file, maxSize = MAX_THUMBNAIL_SIZE) {
     const url = URL.createObjectURL(file)
     img.onload = () => {
       URL.revokeObjectURL(url)
+      const origW = img.naturalWidth || img.width
+      const origH = img.naturalHeight || img.height
       const canvas = document.createElement('canvas')
       let { width, height } = img
       if (width > height && width > maxSize) {
@@ -75,7 +78,7 @@ export function createThumbnailDataUrl(file, maxSize = MAX_THUMBNAIL_SIZE) {
       const ctx = canvas.getContext('2d')
       ctx.drawImage(img, 0, 0, width, height)
       try {
-        resolve(canvas.toDataURL('image/jpeg', 0.7))
+        resolve({ dataUrl: canvas.toDataURL('image/jpeg', 0.7), width: origW, height: origH })
       } catch {
         resolve(null)
       }

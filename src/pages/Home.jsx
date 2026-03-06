@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { CameraIcon, ShieldIcon, ChainIcon } from '../components/Icons'
+import ZkVerifyTooltip from '../components/ZkVerifyTooltip'
 
 function ForReviewersHome() {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
   return (
     <div className="reviewer-section">
       <button
@@ -12,12 +13,12 @@ function ForReviewersHome() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
-        For reviewers: quick checklist
+        For reviewers: quick checklist {open ? '▼' : '▶'}
       </button>
       {open && (
         <div className="reviewer-content">
           <p className="reviewer-paragraph">
-            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). We approximate “original capture” using EXIF and metadata: we reject when EXIF is missing; when <strong>Software</strong> (if present) indicates an editor; when Make/Model are missing; or when the <strong>file save time is 24+ hours after the EXIF capture date</strong> (re-save heuristic). We do not require a Software tag—many cameras omit it. In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
+            In this demo, ProofPic simulates the full authenticity verification pipeline (image hash → device attestation → zero-knowledge proof → zkVerify verification). We approximate “original capture” using EXIF and metadata: we reject when EXIF is missing; when <strong>Software</strong> (if present) indicates an editor; when Make/Model are missing; or when the <strong>file save time is more than a few seconds after the EXIF capture time</strong> (re-save heuristic). We do not require a Software tag—many cameras omit it. In production, verification would occur <strong>at capture time on the device</strong>, where the camera app binds the image hash to a hardware-backed attestation before the file can be edited or exported.
           </p>
           <p className="reviewer-note-inner"><strong>Reviewer test checklist:</strong></p>
           <ul className="reviewer-checklist">
@@ -44,12 +45,33 @@ export default function Home() {
         <p className="hero-tagline">Real photos only. No AI. No filters.</p>
         <h1>We're fighting for genuine photos</h1>
         <p className="hero-sub">
-          ProofPic is the place where every image comes from a <strong>verified real camera</strong> and has <strong>not been edited after capture</strong>. Nothing gets a badge—and nothing gets on the feed—unless it passes our zkVerify verification. Just proof.
+          ProofPic is the place where every image comes from a <strong>verified real camera</strong> and has <strong>not been edited after capture</strong>. Only photos that pass zkVerify get the badge and appear on the feed. Just proof.
         </p>
+        <div className="hero-actions" aria-label="Primary actions">
+          <NavLink to="/verify" className="card-cta hero-cta-primary">Verify a photo</NavLink>
+          <NavLink to="/v/demo" className="card-cta card-cta-secondary hero-cta-secondary">View sample receipt</NavLink>
+        </div>
         <div className="concept-block" role="region" aria-label="Our promise">
           <h2 className="concept-block-title">Nothing gets in without verification</h2>
           <p className="concept-block-text">
-            We're battling the flood of AI slop and filtered reality. Here, every photo is verified on <strong>zkVerify</strong>: we prove it was captured by genuine device hardware and not modified after capture. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
+            We're battling the flood of AI-generated content and filtered reality. Here, every photo is verified on <strong>zkVerify</strong>
+            <ZkVerifyTooltip />
+            : we prove it was captured by genuine device hardware and not modified after capture. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
+          </p>
+        </div>
+        <div className="why-zkverify" role="region" aria-label="Why we use zkVerify">
+          <h2 className="why-zkverify-title">Why ProofPic uses zkVerify</h2>
+          <p className="why-zkverify-intro">
+            <a href="https://zkverify.io/" target="_blank" rel="noopener noreferrer">zkVerify</a> is the universal verification layer for zero-knowledge proofs. <strong>How we use it for photos:</strong> when you verify a photo, we build a ZK proof that it came from a real camera and wasn’t edited, send that proof to zkVerify, and you get a public receipt. Your image and identity stay private; only the proof is verified on-chain.
+          </p>
+          <ul className="why-zkverify-list">
+            <li><strong>Verify everything, compromise nothing</strong> — Proofs confirm authenticity; no raw photo or PII is revealed.</li>
+            <li><strong>Ultra-fast</strong> — Verification in under a second, so the flow stays smooth for users.</li>
+            <li><strong>Any proof, anywhere</strong> — zkVerify works across ecosystems and chains; we submit Groth16 proofs and get a shareable receipt.</li>
+            <li><strong>Cost-efficient at scale</strong> — Built to handle high volume so ProofPic can grow with dating, marketplace, and portfolio use cases.</li>
+          </ul>
+          <p className="why-zkverify-cta">
+            <a href="https://zkverify.io/" target="_blank" rel="noopener noreferrer">Learn more at zkverify.io →</a>
           </p>
         </div>
         <div className="why-verification-matters" role="region" aria-label="Why verification matters">
@@ -91,7 +113,7 @@ export default function Home() {
           <NavLink to="/verify" className="card-cta"><CameraIcon /> Verify a photo →</NavLink>
         </div>
 
-        <div className="card">
+        <div className="card card-highlight">
           <h2 className="card-title-with-icon">
             <ShieldIcon />
             What you get
@@ -104,7 +126,7 @@ export default function Home() {
           <NavLink to="/verify" className="card-cta"><ShieldIcon /> Get started</NavLink>
         </div>
 
-        <div className="card">
+        <div className="card card-highlight">
           <h2 className="card-title-with-icon">
             <ShieldIcon />
             Why real matters
@@ -115,7 +137,7 @@ export default function Home() {
           <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
         </div>
 
-        <div className="card">
+        <div className="card card-highlight">
           <h2 className="card-title-with-icon">
             <ChainIcon />
             Use cases
@@ -136,12 +158,12 @@ export default function Home() {
             <p>Dating apps are full of fake and edited photos. Get a <strong>Verified Real Photo</strong> badge and share the receipt link on your profile. Verify multiple photos to show you're real.</p>
             <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
           </div>
-          <div className="card">
+          <div className="card card-highlight">
             <h3 className="card-title-with-icon"><ChainIcon /> Verify marketplace listing photos</h3>
             <p>Sellers can verify product photos, packaging, and condition shots. Each verified photo gets a public receipt—build trust and reduce disputes.</p>
             <NavLink to="/verify" className="card-cta">Verify listing photos →</NavLink>
           </div>
-          <div className="card">
+          <div className="card card-highlight">
             <h3 className="card-title-with-icon"><CameraIcon /> Verify your portfolio</h3>
             <p>Freelancers and photographers can verify portfolio images so clients know the work is authentic and captured by a real camera.</p>
             <NavLink to="/verify" className="card-cta">Verify portfolio →</NavLink>
