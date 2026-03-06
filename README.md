@@ -45,6 +45,35 @@ All crypto and zkVerify are **simulated** in the browser. Production would use:
 
 `index.html` includes Open Graph and Twitter Card meta tags. The share image is `public/og-image.svg` (1200×630, ProofPic branding). Some platforms (e.g. Facebook, LinkedIn) prefer PNG/JPEG; for maximum compatibility you can add `public/og-image.png` at 1200×630 and point `og:image` / `twitter:image` to it.
 
+## Simulated proof flow (demo)
+
+In this demo we do **not** call zkVerify or generate real Groth16 proofs. We simulate the pipeline:
+
+1. **Upload** — User selects a photo (JPEG from camera preferred).
+2. **EXIF / authenticity checks** — We reject if: no EXIF; Software tag indicates an editor (Paint, Adobe, etc.); no Make/Model; PNG or screenshot-like filename; or file save time is more than a few seconds after EXIF capture time (re-save heuristic). See `src/mock/verification.js` and `scripts/check-exif.cjs`.
+3. **Simulated steps** — Hash → device attestation → ZK proof → zkVerify submission are simulated; the UI shows step progress and produces a **receipt-shaped result** (proof ID, tx hash, device, capture time, etc.) that matches the format we will use in production.
+4. **Receipt and feed** — User gets a “Verified Real Photo” badge and a shareable receipt URL (`/v/:receiptId`). Sample receipt for reviewers: `/v/demo`.
+
+## Path to production (Groth16 + zkVerify)
+
+- **Real image hashing** — e.g. SHA-256 or content hash of the image.
+- **Device attestation** — Android Play Integrity, iOS App Attest, or WebAuthn at capture time to bind the hash to genuine hardware.
+- **Groth16 circuit** — Private inputs: attestation data; public inputs: image hash (or commitment). Proof statement: “I know a valid device attestation for this image hash.”
+- **zkVerify** — Submit proof via zkVerifyJS or zkVerify API; receive on-chain receipt (proof ID, tx hash). Funded account (e.g. tVFY on Volta) for submission.
+- **Backend** — Proof generation and submission run server-side; client uploads photo and triggers the flow.
+
+## Deployment (Vercel)
+
+The app is a single-page application (SPA). **Include `vercel.json`** in the project root so that routes like `/verify`, `/v/demo`, and `/verified` work on refresh (they must serve `index.html`). If `/verify` or `/v/demo` return 404 after deploy, ensure `vercel.json` is present and redeploy.
+
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
+
 ## Design
 
 UI and styling are adapted from the [ZK proof](../ZK%20proof) project. Card icons (camera, shield, chain) and flow strip on Home; light/dark theme toggle.

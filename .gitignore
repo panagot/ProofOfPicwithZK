@@ -4,3 +4,11 @@ dist/
 .env.local
 *.log
 .DS_Store
+
+# Internal / backup — keep locally, do not push to public repo
+THRIVE-APPLICATION-BACKUP.md
+SUBMISSION-FINAL.md
+SUBMISSION-DRAFT.md
+REVIEW-AI-AGENT-FEEDBACK.md
+PROMPT-FOR-GROK-CHATGPT-GUIDELINES.md
+FEEDBACK-Grok-review.md
