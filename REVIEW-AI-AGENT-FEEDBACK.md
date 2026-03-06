@@ -18,8 +18,8 @@ ProofPic is a **coherent, grant-ready demo** with clear alignment to the Thrive 
 - **Why verification matters** and the flow strip (Upload → Hash + Attest → ZK proof → Badge) make the value and pipeline obvious.
 
 ### 2.2 Verification logic
-- EXIF-based rules (no EXIF, editor in Software, no Make/Model, PNG, screenshot filename, 24h re-save) are **documented and consistent** with the “original only” message.
-- Relaxed “no Software required” and 24h re-save window reduce false rejections while still catching obvious re-saves/edits.
+- EXIF-based rules (no EXIF, editor in Software, no Make/Model, PNG, screenshot filename, re-save (file save more than a few seconds after EXIF capture)) are **documented and consistent** with the “original only” message.
+- Relaxed “no Software required” and re-save window (a few seconds after capture) reduce false rejections while still catching obvious re-saves/edits.
 - `scripts/check-exif.cjs` gives a **debug path** for support and reviewers.
 
 ### 2.3 Reviewer experience
@@ -74,8 +74,8 @@ ProofPic is a **coherent, grant-ready demo** with clear alignment to the Thrive 
 ### Lower priority
 
 #### 3.9 README and deployment
-- **Issue:** README describes the PoC well but doesn’t mention the sample receipt, verification collections, or the 24h re-save rule.
-- **Suggestion:** Add one line each: public receipt page and `/v/demo`, “Verify multiple photos” collections, and “Re-save detection (file modified 24+ hours after EXIF date).” If you use Vercel/Netlify, add a one-line note that SPA routing is configured (so `/verify` and `/v/demo` work on refresh).
+- **Issue:** README describes the PoC well but doesn’t mention the sample receipt, verification collections, or the re-save (file save more than a few seconds after EXIF capture) rule.
+- **Suggestion:** Add one line each: public receipt page and `/v/demo`, “Verify multiple photos” collections, and “Re-save detection (file save more than a few seconds after EXIF capture).” If you use Vercel/Netlify, add a one-line note that SPA routing is configured (so `/verify` and `/v/demo` work on refresh).
 
 #### 3.10 Footer: “Sample receipt” link
 - **Issue:** Footer has “Sample receipt” linking to `/v/demo`; that’s good. Ensure the link is visually distinct (e.g. same as other in-page links) and has a clear label for screen readers (e.g. “View sample verification receipt”).
@@ -115,7 +115,7 @@ ProofPic is a **coherent, grant-ready demo** with clear alignment to the Thrive 
 6. Add one line of recovery hint under the failure message.
 
 **Do when convenient:**
-7. Update README with sample receipt, collections, and 24h re-save.
+7. Update README with sample receipt, collections, and re-save (file save more than a few seconds after EXIF capture).
 8. Ensure primary buttons and file input have comfortable touch targets on mobile (e.g. min height 44px, generous padding).
 
 ---

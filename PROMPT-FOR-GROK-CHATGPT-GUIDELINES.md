@@ -18,10 +18,10 @@
 - **Rejection rules (demo heuristics):**
   - No EXIF → reject.
   - EXIF but **Software** tag matches known editors (Paint, Microsoft, Adobe, Photoshop, GIMP, Canva, Snapseed, Lightroom, WhatsApp, Instagram, etc.) → reject.
-  - No **Software** tag or no **Make/Model** in EXIF → reject.
+  - No **Make/Model** in EXIF → reject. (We do not require a Software tag; if present it must not match an editor.)
   - **PNG** → reject (we only accept JPEG for verification).
   - Filename looks like **screenshot** (e.g. `Screenshot`, `IMG_*-WA`) → reject.
-  - **Re-save heuristic:** If the file’s last-modified time is more than **2 hours** after the EXIF capture date, we reject as “re-saved or modified” (e.g. edited in Paint and saved later).
+  - **Re-save heuristic:** If the file’s last-modified time is more than **a few seconds** after the EXIF capture time, we reject as “re-saved or modified” (e.g. edited in Paint and saved later).
 - **Public verification receipt:** Each verified photo gets a shareable page `/v/:receiptId` with Proof ID, verification time, hash, “Verified on zkVerify,” and optional thumbnail.
 - **Verified Photo Feed:** List of verified photos with Proof ID and “View public receipt” link (stored in browser for demo).
 - **Dating CTA:** Home has a “Verify your dating profile photo” section.

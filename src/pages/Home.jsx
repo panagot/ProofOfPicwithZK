@@ -68,7 +68,7 @@ export default function Home() {
             <li><strong>Verify everything, compromise nothing</strong> — Proofs confirm authenticity; no raw photo or PII is revealed.</li>
             <li><strong>Ultra-fast</strong> — Verification in under a second, so the flow stays smooth for users.</li>
             <li><strong>Any proof, anywhere</strong> — zkVerify works across ecosystems and chains; we submit Groth16 proofs and get a shareable receipt.</li>
-            <li><strong>Cost-efficient at scale</strong> — Built to handle high volume so ProofPic can grow with dating, marketplace, and portfolio use cases.</li>
+            <li><strong>Cost-efficient at scale</strong> — Built to handle high volume so ProofPic can grow with dating, marketplace, portfolio, social media, and other use cases.</li>
           </ul>
           <p className="why-zkverify-cta">
             <a href="https://zkverify.io/" target="_blank" rel="noopener noreferrer">Learn more at zkverify.io →</a>
@@ -82,6 +82,8 @@ export default function Home() {
             <li><strong>Marketplaces</strong> — Sellers prove listing photos are real.</li>
             <li><strong>Freelance portfolios</strong> — Prove your work is authentic.</li>
             <li><strong>Journalism</strong> — Verify field and citizen photography.</li>
+            <li><strong>Social media</strong> — Prove your posts are real, not AI or heavily edited.</li>
+            <li><strong>And more</strong> — Anywhere you need to show a photo is from a real camera.</li>
           </ul>
         </div>
         <div className="hero-requirement" role="note">
@@ -119,7 +121,7 @@ export default function Home() {
             What you get
           </h2>
           <ul className="bullet-list">
-            <li>A <strong>Verified Real Photo</strong> badge you can share (e.g. dating, marketplace, portfolio).</li>
+            <li>A <strong>Verified Real Photo</strong> badge you can share (e.g. dating, marketplace, portfolio, social media).</li>
             <li>A <strong>receipt</strong> (ID + tx hash) that links to on-chain verification on zkVerify.</li>
             <li>Your photo is <strong>not stored</strong> on our servers; we only use it to compute a hash and run verification.</li>
           </ul>
@@ -143,7 +145,7 @@ export default function Home() {
             Use cases
           </h2>
           <p>
-            Dating profiles, freelance portfolios, marketplace listings, journalism—anywhere you need to show that a photo is authentic and from a real camera, not edited after capture.
+            Dating profiles, freelance portfolios, marketplace listings, journalism, social media, and more—anywhere you need to show that a photo is authentic and from a real camera, not edited after capture.
           </p>
           <NavLink to="/verify" className="card-cta"><ChainIcon /> Verify a photo</NavLink>
         </div>
@@ -154,9 +156,9 @@ export default function Home() {
         <p className="collections-intro">ProofPic encourages repeat verification. Verify several photos per listing, portfolio, or profile to build trust and generate more proofs.</p>
         <div className="collections-grid">
           <div className="card card-highlight">
-            <h3 className="card-title-with-icon"><ShieldIcon /> Verify your dating profile photo</h3>
-            <p>Dating apps are full of fake and edited photos. Get a <strong>Verified Real Photo</strong> badge and share the receipt link on your profile. Verify multiple photos to show you're real.</p>
-            <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
+            <h3 className="card-title-with-icon"><CameraIcon /> Verify your portfolio</h3>
+            <p>Freelancers and photographers can verify portfolio images so clients know the work is authentic and captured by a real camera.</p>
+            <NavLink to="/verify" className="card-cta">Verify portfolio →</NavLink>
           </div>
           <div className="card card-highlight">
             <h3 className="card-title-with-icon"><ChainIcon /> Verify marketplace listing photos</h3>
@@ -164,9 +166,14 @@ export default function Home() {
             <NavLink to="/verify" className="card-cta">Verify listing photos →</NavLink>
           </div>
           <div className="card card-highlight">
-            <h3 className="card-title-with-icon"><CameraIcon /> Verify your portfolio</h3>
-            <p>Freelancers and photographers can verify portfolio images so clients know the work is authentic and captured by a real camera.</p>
-            <NavLink to="/verify" className="card-cta">Verify portfolio →</NavLink>
+            <h3 className="card-title-with-icon"><ChainIcon /> Social media & more</h3>
+            <p>Prove your social posts are real—not AI-generated or heavily filtered. Use the badge on any platform where authenticity matters. Same verification, more use cases.</p>
+            <NavLink to="/verify" className="card-cta">Verify a photo →</NavLink>
+          </div>
+          <div className="card card-highlight">
+            <h3 className="card-title-with-icon"><ShieldIcon /> Verify your dating profile photo</h3>
+            <p>Dating apps are full of fake and edited photos. Get a <strong>Verified Real Photo</strong> badge and share the receipt link on your profile. Verify multiple photos to show you're real.</p>
+            <NavLink to="/verify" className="card-cta">Verify my photo →</NavLink>
           </div>
         </div>
       </div>

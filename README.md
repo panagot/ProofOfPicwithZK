@@ -17,10 +17,10 @@ Open **http://localhost:5173**. Use **Verify photo** to upload an image; the app
 ## What this PoC does
 
 - **Home:** Pitch, “use the original photo” requirement, how it works, what you get, use cases, and a **For reviewers** collapsible checklist.
-- **Verify photo:** Upload (original from camera/phone only), instruction graphic, **Verification pipeline**, and **For reviewers** notes. On success, you can open a **public receipt page**.
+- **Verify photo:** Upload (original from camera/phone only), **example camera photos** (hover for details, click to open full receipt at `/v/demo`), instruction graphic, **Verification pipeline**, and **For reviewers** notes. On success, you can open a **public receipt page**. Re-save detection: we reject if the file was saved more than a few seconds after EXIF capture (e.g. after editing in Paint).
 - **Verified feed:** List of photos that passed verification (stored in `localStorage`). Each card links to a public receipt.
 - **Sample receipt:** `/v/demo` shows a sample verification receipt for reviewers.
-- **Collections:** Home encourages verifying multiple photos (dating profile, marketplace listing, portfolio) to drive repeat proofs.
+- **Collections:** Home encourages verifying multiple photos (dating profile, marketplace listing, portfolio, social media, and more) to drive repeat proofs.
 
 All crypto and zkVerify are **simulated** in the browser. Production would use:
 
@@ -36,7 +36,9 @@ All crypto and zkVerify are **simulated** in the browser. Production would use:
 - `src/pages/VerificationReceipt.jsx` — Public receipt page (`/v/:receiptId`, plus `/v/demo` sample).
 - `src/store/verifiedPhotos.js` — Persist verified entries and thumbnails (localStorage).
 - `src/mock/verification.js` — Simulated hash, attestation, proof, and zkVerify.
+- `src/components/ZkVerifyTooltip.jsx` — Inline tooltip explaining zkVerify and link to zkverify.io.
 - `scripts/check-exif.cjs` — Debug script to run the demo EXIF checks on a local file.
+- `vercel.json` — SPA routing so `/verify`, `/v/demo`, etc. work on refresh when deployed to Vercel.
 - `IDEA-ProofPic.md` — Proposal and program-fit notes for Thrive zkVerify Web2.
 
 ## Sharing (Open Graph)
