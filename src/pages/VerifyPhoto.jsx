@@ -154,7 +154,7 @@ export default function VerifyPhoto() {
       <div className="verify-layout">
       <div className="page-hero">
         <h1>Upload the original photo from your camera</h1>
-        <p>ProofPic verifies that a photo originated from a real camera device and has not been modified after capture. To verify successfully: upload the <strong>original photo from your phone or camera</strong>; do not edit, crop, filter, or re-save the image; do not upload screenshots or photos downloaded from messaging apps.</p>
+        <p>ProofPic verifies that a photo originated from genuine camera hardware and has not been modified after capture. To verify successfully: upload the <strong>original photo from your phone or camera</strong>; do not edit, crop, filter, or re-save the image; do not upload screenshots or photos downloaded from messaging apps.</p>
         <p style={{ margin: '0.5rem 0 0' }}>
           <a href="#choose-photo" className="btn-text" aria-label="Jump to upload section">Jump to upload ↓</a>
         </p>

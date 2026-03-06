@@ -1,6 +1,6 @@
 # ProofPic — Verify Your Photos Are Real
 
-A proof-of-concept web app: upload a photo and get a **Verified Real Photo** badge backed by a zero-knowledge proof that the image **originated from a real camera device and has not been modified after capture**. Verification is designed to run on [zkVerify](https://zkverify.io).
+A proof-of-concept web app: upload a photo and get a **Verified Real Photo** badge backed by a zero-knowledge proof that the image **originated from genuine camera hardware and has not been modified after capture**. Verification is designed to run on [zkVerify](https://zkverify.io).
 
 ## Run the demo
 

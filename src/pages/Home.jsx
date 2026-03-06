@@ -13,7 +13,7 @@ function ForReviewersHome() {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
       >
-        For reviewers: quick checklist {open ? '▼' : '▶'}
+        Reviewer Quick Checklist {open ? '▼' : '▶'}
       </button>
       {open && (
         <div className="reviewer-content">
@@ -30,7 +30,7 @@ function ForReviewersHome() {
           <ul className="reviewer-checklist">
             <li><strong>Web2 UX</strong> — No wallets or crypto jargon; mainstream-friendly.</li>
             <li><strong>Proof volume</strong> — Repeat uploads + shareable receipts support milestones (25K → 250K proofs or 250 → 2.5K users).</li>
-            <li><strong>Direct zkVerify consumer</strong> — We submit proofs to zkVerify; not infrastructure for others.</li>
+            <li><strong>Direct zkVerify consumer</strong> — ProofPic is a consumer application that directly generates proofs submitted to zkVerify.</li>
           </ul>
         </div>
       )}
@@ -76,7 +76,7 @@ export default function Home() {
         </div>
         <div className="why-verification-matters" role="region" aria-label="Why verification matters">
           <h2 className="why-verification-title">Why verify photos?</h2>
-          <p className="why-verification-intro">Trust in digital photos is declining. Fake dating profiles, edited marketplace listings, AI-generated images, and fake journalism photos make it hard to know what’s real. <strong>ProofPic solves this with cryptographic verification:</strong> we verify that a photo originated from a real camera device and has not been modified after capture. This helps build trust in:</p>
+          <p className="why-verification-intro">Trust in digital photos is declining. Fake dating profiles, edited marketplace listings, AI-generated images, and fake journalism photos make it hard to know what’s real. <strong>ProofPic solves this with cryptographic verification:</strong> we verify that a photo originated from genuine camera hardware and has not been modified after capture. This helps build trust in:</p>
           <ul className="why-verification-list">
             <li><strong>Dating profiles</strong> — Show your photos are genuine.</li>
             <li><strong>Marketplaces</strong> — Sellers prove listing photos are real.</li>
@@ -90,7 +90,7 @@ export default function Home() {
           <strong>Use the original photo</strong> — Upload directly from your camera or phone (the file as saved by your device). Do not use a photo shared via Facebook, Viber, WhatsApp, or saved from the web; those copies are often recompressed and we cannot verify them.
         </div>
         <p className="hero-note">
-          This demo simulates the full flow. Best on modern Android/iOS with hardware attestation; web fallbacks limited. In production, proofs are verified on zkVerify (Groth16).
+          This demo simulates the full flow. Best on modern Android/iOS with hardware attestation; web fallbacks limited. In production: Groth16 proofs generated server-side (or device-side) and submitted via zkVerifyJS/API for on-chain receipt.
         </p>
         <div className="flow-strip" aria-label="Verification flow">
           <span className="flow-strip-step"><strong>1.</strong> Upload</span>
