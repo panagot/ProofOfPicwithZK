@@ -6,7 +6,7 @@
  * or missing EXIF typical of emailed/re-saved files) so reviewers see the intended "edited = not verified" behavior.
  */
 
-// Deny list: EXIF Software tag (ChatGPT/Grok guidelines)
+// Deny list: EXIF Software tag (known editors)
 const EDITOR_SOFTWARE_PATTERN = /paint|mspaint|microsoft|adobe|photoshop|gimp|canva|snapseed|lightroom|picsart|fotor|photopea|affinity|pixelmator|instagram|whatsapp|telegram|facebook|tiktok|capcut|remini|photoscape|paint\.net|windows\s*photo|photo\s*editor/i
 
 // Screenshot-like filenames (Rule 5)
@@ -37,9 +37,9 @@ function parseExifDateTime(str) {
 }
 
 /**
- * Demo-only: check if image looks edited or re-saved (ChatGPT/Grok guidelines).
- * Rules: no EXIF → reject; EXIF Software = editor → reject; no Software → reject;
- * no Make/Model → reject; PNG → reject; screenshot filename → reject.
+ * Demo-only: check if image looks edited or re-saved.
+ * Rules: no EXIF → reject; EXIF Software = editor → reject; no Make/Model → reject;
+ * PNG → reject; screenshot filename → reject; re-save (file time > capture + tolerance) → reject.
  */
 export async function demoEditCheck(file) {
   if (!file || !file.type.startsWith('image/')) return { pass: true }
@@ -106,7 +106,7 @@ export async function demoEditCheck(file) {
           }
         }
         if (softwareIsEditor) return { pass: false, reasonKey: 'edited' }
-        // Do not require Software tag — many genuine camera photos omit it (ChatGPT/Grok feedback). Only reject when Software is present and matches an editor.
+        // Do not require Software tag — many genuine camera photos omit it. Only reject when Software is present and matches an editor.
         if (!hasMakeOrModel) return { pass: false, reasonKey: 'no_camera_fields' }
         // Re-save heuristic: file lastModified after EXIF capture time suggests the file was re-saved (e.g. edited in Paint). Only allow a few seconds tolerance for camera write delay and clock skew.
         const RESAVE_TOLERANCE_MS = 5 * 1000 // 5 seconds: catch any save after capture (Paint, editor, copy)
@@ -128,7 +128,7 @@ export async function demoEditCheck(file) {
   return { pass: false, reasonKey: 'no_exif' }
 }
 
-/** User-facing failure messages (ChatGPT guidelines). */
+/** User-facing failure messages. */
 export const FAILURE_MESSAGES = {
   no_exif: 'This photo does not contain camera metadata (EXIF). Please upload the original photo directly from your camera or phone, not a screenshot or downloaded copy.',
   edited: 'This photo appears to have been edited. The image metadata shows it was processed by an editing application. Please upload the original photo directly from your camera before any edits or filters.',

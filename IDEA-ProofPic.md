@@ -1,6 +1,6 @@
 # ProofPic — Verify Your Photos Are Real
 
-*Proposal from ChatGPT, refined with Cursor; Grok validation and MVP path merged below.*
+*Proposal and program-fit notes for Thrive zkVerify Web2.*
 
 ---
 
@@ -97,11 +97,11 @@ This keeps M1 (live deployment) achievable while still delivering "verified real
 | Traction narrative | Good (multiple use cases, repeat usage) |
 | Technical feasibility | Achievable with capture-time signing + ZK; full PRNU in-circuit is a later phase |
 
-ProofPic is a strong candidate for the program. Grok (March 2026): "One of the best-aligned ideas yet — hits their example verbatim, drives proofs via repeat/viral consumer use, and screams web2 product not infra." Recommend adopting the "signed capture + ZK" path for the technical plan and treating sensor fingerprinting as an enhancement.
+ProofPic is a strong candidate for the program: strong alignment with the authenticity/camera example, drives proofs via repeat consumer use, and is clearly a Web2 product not infra. We adopt the "signed capture + ZK" path for the technical plan and treat sensor fingerprinting as an enhancement.
 
 ---
 
-## Grok — Why this fits (program alignment)
+## Why this fits (program alignment)
 
 - **Use case:** Direct match to "Authenticate that an image was captured by a specific camera"; extends to real-camera vs AI-generated/edited.
 - **Web2 + mainstream:** Simple upload → verify → badge; no ZK/wallet jargon.
@@ -110,7 +110,7 @@ ProofPic is a strong candidate for the program. Grok (March 2026): "One of the b
 
 ---
 
-## Grok — Recommended MVP path
+## Recommended MVP path
 
 ### App flow
 1. User takes or uploads photo in-app (camera access or file picker).
@@ -134,7 +134,7 @@ Feasible with Circom/snarkjs; zkVerify supports this. Keeps circuits small and v
 
 ---
 
-## Grok — Risks & mitigations
+## Risks & mitigations
 
 | Risk | Mitigation |
 |------|------------|
