@@ -28,6 +28,8 @@ Today there is **no simple way to prove that a photo was captured by a real came
 
 **Use cases:** dating profile photos, marketplace listing photos, freelance portfolio images, journalism or field photography, social media. ProofPic is a **standalone application with its own users**, not infrastructure for other platforms.
 
+**Program fit:** Direct match to “Authenticate that an image was captured by a specific camera.” Product, not infra — users come to our app to verify photos and get a badge; we run the platform.
+
 ## What this PoC does
 
 - **Home:** Pitch, “use the original photo” requirement, how it works, what you get, use cases, and a **For reviewers** collapsible checklist.
@@ -75,17 +77,19 @@ In this demo we do **not** call zkVerify or generate real Groth16 proofs. We sim
 - **zkVerify** — Submit proof via zkVerifyJS or zkVerify API; receive on-chain receipt (proof ID, tx hash). Funded account (e.g. tVFY on Volta) for submission.
 - **Backend** — Proof generation and submission run server-side; client uploads photo and triggers the flow.
 
-ProofPic uses ZK to verify photo authenticity **without revealing the original image or device identity**. Third parties can confirm authenticity without access to the image or device information.
+ProofPic uses ZK to verify photo authenticity **without revealing the original image or device identity**. Third parties can confirm authenticity without access to the image or device information. **Technical note:** Full sensor fingerprinting (e.g. PRNU) in a ZK circuit is heavy; the MVP uses **capture-time attestation + image hash** (signed statement from genuine device); sensor checks can be added off-circuit or in a later phase.
 
 ## Traction & milestones
 
-**Growth segments:** dating profile verification, marketplace listing verification, portfolio authenticity. Each user typically verifies **multiple photos**, creating repeat proof generation (e.g. 2,000 users × 5 photos = 10,000 proofs; 5,000 × 5 = **25,000 proofs**).
+**Growth segments:** dating profile verification, marketplace listing verification, portfolio authenticity. Each user typically verifies **multiple photos**, creating repeat proof generation (e.g. 2,000 users × 5 photos = 10,000 proofs; 5,000 × 5 = **25,000 proofs**). At **M2** and **M3** the program requires **one metric** — we choose either proof volume **or** unique users (not both).
 
 | Milestone | Target |
 |-----------|--------|
 | **M1 — Core product** (30–60 days) | Verification UX, proof pipeline, public receipts, verified feed |
 | **M2 — Traction** (90 days) | **250+ unique users** OR **25,000+ ZK proofs** to zkVerify |
 | **M3 — Scale** (150 days) | **2,500+ users** OR **250,000+ ZK proofs** |
+
+**Direction:** A **verified feed** where every post is a verified-real photo (“real photos only; no AI, no filters”) — supports retention and proof volume; mobile-first with web fallback for device attestation.
 
 ## Why zkVerify
 
@@ -98,6 +102,18 @@ ProofPic uses [zkVerify](https://zkverify.io) as the verification layer because 
 | Why use ZK? | Path to production, verification flow |
 | Will people use it? | Traction & milestones |
 | Can it reach milestones? | Milestones table above |
+
+## Business model
+
+**Freemium:** Basic verifies free (e.g. N per month); premium = unlimited verifies, custom badges, or optional features. Revenue from premium subscriptions or verify packs; **consumer product first** (not positioned as infrastructure).
+
+## Risks & mitigations
+
+| Risk | Mitigation |
+|------|------------|
+| **Competition / timing** | No exact “proof of real photo” in the zkVerify ecosystem yet; deepfakes and AI make authenticity timely. |
+| **User acquisition** | Partner with dating, marketplace, freelance communities; highlight badge virality. |
+| **Technical coverage** | Device attestation is stronger on mobile. **Mobile-first;** web fallback with metadata + tamper checks. |
 
 ## Deployment (Vercel)
 
@@ -116,7 +132,3 @@ The app is a single-page application (SPA). **Include `vercel.json`** in the pro
 Reviewers can try the **live demo** ([home](https://proof-of-picwith-zk.vercel.app) | [verify](https://proof-of-picwith-zk.vercel.app/verify) | [sample receipt](https://proof-of-picwith-zk.vercel.app/v/demo)) to see the full flow.
 
 ![ProofPic — Home / Verify flow](screenshot/1.png)
-
-## Design
-
-UI and styling are adapted from the [ZK proof](../ZK%20proof) project. Card icons (camera, shield, chain) and flow strip on Home; light/dark theme toggle.
