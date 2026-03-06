@@ -154,7 +154,7 @@ export default function VerifyPhoto() {
       <div className="verify-layout">
       <div className="page-hero">
         <h1>Upload the original photo from your camera</h1>
-        <p>ProofPic verifies that a photo comes directly from a real camera. To verify successfully: upload the <strong>original photo from your phone or camera</strong>; do not edit, crop, filter, or re-save the image; do not upload screenshots or photos downloaded from messaging apps.</p>
+        <p>ProofPic verifies that a photo originated from a real camera device and has not been modified after capture. To verify successfully: upload the <strong>original photo from your phone or camera</strong>; do not edit, crop, filter, or re-save the image; do not upload screenshots or photos downloaded from messaging apps.</p>
         <p style={{ margin: '0.5rem 0 0' }}>
           <a href="#choose-photo" className="btn-text" aria-label="Jump to upload section">Jump to upload ↓</a>
         </p>
@@ -230,7 +230,7 @@ export default function VerifyPhoto() {
         <div className="info-blocks">
           <div className="info-block">
             <h3>What we verify</h3>
-            <p>That the image was captured by <strong>genuine device hardware</strong> and <strong>not edited after capture</strong> (not a screenshot or re-saved file). We compute a hash, bind it to your device attestation, and produce a ZK proof verified on zkVerify. We do not identify you—only that this photo came from a real camera.</p>
+            <p>That the image originated from <strong>genuine camera hardware</strong> and was <strong>not modified after capture</strong> (not a screenshot or re-saved file). We compute a hash, bind it to your device attestation, and produce a ZK proof verified on zkVerify. We do not identify you—only that this photo came from a real camera.</p>
           </div>
           <div className="info-block">
             <h3>Your privacy</h3>

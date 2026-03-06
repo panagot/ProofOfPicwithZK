@@ -1,6 +1,6 @@
 # ProofPic — Verify Your Photos Are Real
 
-A proof-of-concept web app: upload a photo and get a **Verified Real Photo** badge backed by a zero-knowledge proof that the image was captured by a real camera and **not edited after capture**. Verification is designed to run on [zkVerify](https://zkverify.io).
+A proof-of-concept web app: upload a photo and get a **Verified Real Photo** badge backed by a zero-knowledge proof that the image **originated from a real camera device and has not been modified after capture**. Verification is designed to run on [zkVerify](https://zkverify.io).
 
 ## Run the demo
 
@@ -58,7 +58,7 @@ In this demo we do **not** call zkVerify or generate real Groth16 proofs. We sim
 
 - **Real image hashing** — e.g. SHA-256 or content hash of the image.
 - **Device attestation** — Android Play Integrity, iOS App Attest, or WebAuthn at capture time to bind the hash to genuine hardware.
-- **Groth16 circuit** — Private inputs: attestation data; public inputs: image hash (or commitment). Proof statement: “I know a valid device attestation for this image hash.”
+- **Groth16 circuit** — Private inputs: attestation data; public inputs: image hash (or commitment). Proof statement (production): “the prover demonstrates knowledge of an image hash and a valid device attestation proving the image originated from genuine camera hardware.”
 - **zkVerify** — Submit proof via zkVerifyJS or zkVerify API; receive on-chain receipt (proof ID, tx hash). Funded account (e.g. tVFY on Volta) for submission.
 - **Backend** — Proof generation and submission run server-side; client uploads photo and triggers the flow.
 
@@ -73,6 +73,12 @@ The app is a single-page application (SPA). **Include `vercel.json`** in the pro
   ]
 }
 ```
+
+## Screenshots (for reviewers)
+
+Reviewers can try the **live demo** ([home](https://proof-of-picwith-zk.vercel.app) | [verify](https://proof-of-picwith-zk.vercel.app/verify) | [sample receipt](https://proof-of-picwith-zk.vercel.app/v/demo)) to see the full flow.
+
+![ProofPic — Home / Verify flow](screenshot/1.png)
 
 ## Design
 

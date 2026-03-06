@@ -56,7 +56,7 @@ export default function Home() {
           <p className="concept-block-text">
             We're battling the flood of AI-generated content and filtered reality. Here, every photo is verified on <strong>zkVerify</strong>
             <ZkVerifyTooltip />
-            : we prove it was captured by genuine device hardware and not modified after capture. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
+            : we verify that it originated from genuine camera hardware and was not modified after capture. If it doesn't pass, it doesn't get the badge—and it doesn't get shared. Real only.
           </p>
         </div>
         <div className="why-zkverify" role="region" aria-label="Why we use zkVerify">
@@ -68,15 +68,15 @@ export default function Home() {
             <li><strong>Verify everything, compromise nothing</strong> — Proofs confirm authenticity; no raw photo or PII is revealed.</li>
             <li><strong>Ultra-fast</strong> — Verification in under a second, so the flow stays smooth for users.</li>
             <li><strong>Any proof, anywhere</strong> — zkVerify works across ecosystems and chains; we submit Groth16 proofs and get a shareable receipt.</li>
-            <li><strong>Cost-efficient at scale</strong> — Built to handle high volume so ProofPic can grow with dating, marketplace, portfolio, social media, and other use cases.</li>
+            <li><strong>Cost-efficient at scale</strong> — Built to handle high volume so ProofPic can grow with dating, marketplace, portfolio, social media, and other use cases. A single marketplace seller verifying 10 product photos already generates 10 proofs.</li>
           </ul>
           <p className="why-zkverify-cta">
             <a href="https://zkverify.io/" target="_blank" rel="noopener noreferrer">Learn more at zkverify.io →</a>
           </p>
         </div>
         <div className="why-verification-matters" role="region" aria-label="Why verification matters">
-          <h2 className="why-verification-title">Why verification matters</h2>
-          <p className="why-verification-intro">Trust in digital photos is declining. ProofPic lets anyone prove that a photo was captured by a real camera and has not been edited after capture. This helps build trust in:</p>
+          <h2 className="why-verification-title">Why verify photos?</h2>
+          <p className="why-verification-intro">Trust in digital photos is declining. Fake dating profiles, edited marketplace listings, AI-generated images, and fake journalism photos make it hard to know what’s real. <strong>ProofPic solves this with cryptographic verification:</strong> we verify that a photo originated from a real camera device and has not been modified after capture. This helps build trust in:</p>
           <ul className="why-verification-list">
             <li><strong>Dating profiles</strong> — Show your photos are genuine.</li>
             <li><strong>Marketplaces</strong> — Sellers prove listing photos are real.</li>
@@ -134,7 +134,7 @@ export default function Home() {
             Why real matters
           </h2>
           <p>
-            Filters and edited images make &quot;real&quot; meaningless. We're building the opposite: a place where <strong>every photo is verified from a real camera and not edited after capture</strong>. When it's on ProofPic, it passed the test.
+            Filters and edited images make &quot;real&quot; meaningless. We're building the opposite: a place where <strong>every photo originated from a real camera device and was not modified after capture</strong>. When it's on ProofPic, it passed the test.
           </p>
           <NavLink to="/verify" className="card-cta">Verify a photo</NavLink>
         </div>

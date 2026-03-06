@@ -38,7 +38,7 @@ export default function VerifiedPictures() {
       <div className="page-hero">
         <h1>Verified Photo Feed</h1>
         <p>
-          Everything here <strong>passed zkVerify</strong>. Every photo was verified as captured by a real camera and not edited after capture. Each card shows Proof ID, receipt, and a shareable verification link. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
+          Everything here <strong>passed zkVerify</strong>. Every photo was verified as originating from a real camera device and not modified after capture. Each card shows Proof ID, receipt, and a shareable verification link. This list is stored in your browser for this demo; in production it would reflect your account&apos;s verified photos.
         </p>
         <p className="concept-inline">
           Nothing gets on ProofPic without verification. What you see here is real.
